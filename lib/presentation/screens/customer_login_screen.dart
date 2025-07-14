@@ -15,27 +15,30 @@ class _CustomerLoginScreenState extends State<CustomerLoginScreen> {
   final TextEditingController _passwordController = TextEditingController();
 
   Future<void> login() async {
-    try {
-      await _auth.signInWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
-      );
-
-      print('Inloggad som: ${_auth.currentUser?.email}');
-
-      if (context.mounted) {
-        Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
-      }
-    } catch (e) {
-      String errorMessage = e.toString();
-      if (e is FirebaseAuthException) {
-        errorMessage = e.message ?? 'Okänt fel';
-      }
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Fel: $errorMessage')),
-      );
+  try {
+    await _auth.signInWithEmailAndPassword(
+      email: _emailController.text.trim(),
+      password: _passwordController.text.trim(),
+    );
+    print('Inloggad som: ${_auth.currentUser?.email}');
+    if (context.mounted) {
+      Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
     }
+  } catch (e) {
+    String errorMessage = 'Ett fel uppstod';
+    if (e is FirebaseAuthException) {
+      errorMessage = e.message ?? 'Okänt fel (Auth)';
+    } else if (e is FirebaseException) {
+      errorMessage = e.message ?? 'Okänt fel (Firebase)';
+    } else {
+      errorMessage = e.toString();
+    }
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(errorMessage)),
+    );
   }
+}
+
 
 
   @override

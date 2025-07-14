@@ -16,27 +16,30 @@ class _CustomerRegisterScreenState extends State<CustomerRegisterScreen> {
   final TextEditingController _passwordController = TextEditingController();
 
   Future<void> register() async {
-    try {
-      await _auth.createUserWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
-      );
-
-      print('Ny kund skapad: ${_auth.currentUser?.email}');
-
-      if (context.mounted) {
-        Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
-      }
-    } catch (e) {
-      String errorMessage = e.toString();
-      if (e is FirebaseAuthException) {
-        errorMessage = e.message ?? 'Okänt fel';
-      }
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Fel: $errorMessage')),
-      );
+  try {
+    await _auth.createUserWithEmailAndPassword(
+      email: _emailController.text.trim(),
+      password: _passwordController.text.trim(),
+    );
+    print('Ny kund skapad: ${_auth.currentUser?.email}');
+    if (context.mounted) {
+      Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
     }
+    } catch (e) {
+    String errorMessage = 'Ett fel uppstod';
+    if (e is FirebaseAuthException) {
+      errorMessage = e.message ?? 'Okänt fel (Auth)';
+    } else if (e is FirebaseException) {
+      errorMessage = e.message ?? 'Okänt fel (Firebase)';
+    } else {
+      errorMessage = e.toString();
+    }
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(errorMessage)),
+    );
   }
+}
+
 
 
 
