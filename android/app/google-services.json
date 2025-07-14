@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "207650719697",
+    "project_id": "svinnsmart-app-d5a2f",
+    "storage_bucket": "svinnsmart-app-d5a2f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:207650719697:android:32b2ea254df1882f6d02f0",
+        "android_client_info": {
+          "package_name": "com.example.svinnsmart_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnbwrawQJwlj03pOY-7FfKcqy2RiKHtdw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
