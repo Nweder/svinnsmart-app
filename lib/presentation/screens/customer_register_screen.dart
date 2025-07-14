@@ -1,27 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:go_router/go_router.dart';
+import '../presentation/screens/customer_register_screen.dart';
 
-class CustomerLoginScreen extends StatefulWidget {
-  const CustomerLoginScreen({super.key});
+
+class CustomerRegisterScreen extends StatefulWidget {
+  const CustomerRegisterScreen({super.key});
 
   @override
-  State<CustomerLoginScreen> createState() => _CustomerLoginScreenState();
+  State<CustomerRegisterScreen> createState() => _CustomerRegisterScreenState();
 }
 
-class _CustomerLoginScreenState extends State<CustomerLoginScreen> {
+class _CustomerRegisterScreenState extends State<CustomerRegisterScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  Future<void> login() async {
+  Future<void> register() async {
     try {
-      await _auth.signInWithEmailAndPassword(
+      await _auth.createUserWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
 
-      print('Inloggad som: ${_auth.currentUser?.email}');
+      print('Ny kund skapad: ${_auth.currentUser?.email}');
 
       if (context.mounted) {
         Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
@@ -38,10 +39,11 @@ class _CustomerLoginScreenState extends State<CustomerLoginScreen> {
   }
 
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Kund Login')),
+      appBar: AppBar(title: const Text('Registrera Konto')),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -57,12 +59,8 @@ class _CustomerLoginScreenState extends State<CustomerLoginScreen> {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: login,
-              child: const Text('Logga in'),
-            ),
-            TextButton(
-              onPressed: () => context.go('/customer-register'),
-              child: const Text('Inget konto? Skapa här'),
+              onPressed: register,
+              child: const Text('Skapa konto'),
             ),
           ],
         ),
